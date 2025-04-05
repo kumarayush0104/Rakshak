@@ -9,8 +9,8 @@ export const generateQRCode = async (fileId, fileUrl) => {
     }
 
     try {
-        // Generate QR code with print endpoint URL
-        const printUrl = `https://rakshak-34jq.onrender.com/api/v1/print/${fileId}`;
+        // Generate QR code with frontend print page URL
+        const printUrl = `https://rakshakofficial.vercel.app/print/${fileId}`;
         const buffer = await QRCode.toBuffer(printUrl, { 
             // Ensure the buffer is generated correctly
 
