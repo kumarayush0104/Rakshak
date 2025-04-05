@@ -12,6 +12,15 @@ const Print = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Check if URL contains a temp token (format: /print/temp/:token)
+    const pathParts = window.location.pathname.split('/');
+    if (pathParts[2] === 'temp') {
+      const token = pathParts[3];
+      fetchFile(token, true);
+      return;
+    }
+
+    // Regular authenticated flow
     if (!fileId) {
       toast.error('No document selected');
       navigate('/dashboard');
@@ -36,13 +45,21 @@ const Print = () => {
       }
     };
 
-    const fetchFile = async () => {
+    const fetchFile = async (id, isToken = false) => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/print/${fileId}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        });
+        const endpoint = isToken 
+          ? `${import.meta.env.VITE_BASE_URL}/api/v1/print/temp/${id}`
+          : `${import.meta.env.VITE_BASE_URL}/api/v1/print/${fileId}`;
+          
+        const config = isToken 
+          ? {}
+          : {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+              }
+            };
+
+        const response = await axios.get(endpoint, config);
 
         if (response.data.success) {
           setFileData(response.data.file);

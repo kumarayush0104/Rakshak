@@ -1,6 +1,7 @@
 import QRCode from 'qrcode';
 import QRModel from '../models/qrModel.js';
 import { uploadQRCodeBuffer } from '../utils/cloudinary.js';
+import { generateTempToken } from '../helper/authHelper.js';
 
 // Generate QR code from cloudinary URL
 export const generateQRCode = async (fileId, fileUrl) => {
@@ -9,8 +10,11 @@ export const generateQRCode = async (fileId, fileUrl) => {
     }
 
     try {
-        // Generate QR code with frontend print page URL
-        const printUrl = `https://rakshakofficial.vercel.app/print/${fileId}`;
+        // Generate temporary token for QR code access
+        const tempToken = generateTempToken(fileId);
+        
+        // Generate QR code with frontend print page URL containing temp token
+        const printUrl = `https://rakshakofficial.vercel.app/print/temp/${tempToken}`;
         const buffer = await QRCode.toBuffer(printUrl, { 
             // Ensure the buffer is generated correctly
 
