@@ -38,7 +38,7 @@ const Print = () => {
 
     const fetchFile = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/print/${fileId}`, {
+        const response = await axios.get(`https://rakshak-34jq.onrender.com/api/v1/print/${fileId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },

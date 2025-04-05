@@ -7,20 +7,18 @@
       "config": {
         "distDir": "dist"
       }
-    },
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "api/$1"
+      "src": "/api/v1/print/(.*)",
+      "dest": "https://your-render-backend-url/api/v1/print/$1",
+      "methods": ["GET"]
     },
     {
       "src": "/(.*)", 
-      "dest": "/dist/$1"
+      "dest": "/dist/$1",
+      "continue": true
     }
   ]
 }
