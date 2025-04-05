@@ -1,11 +1,9 @@
 import { Router } from 'express';
 import FileModel from '../models/fileModel.js';
 import { isAuthenticated } from '../middlewares/authMiddleware.js';
-import { verifyTempToken } from '../helper/authHelper.js';
 
 const router = Router();
 
-// Authenticated print route
 router.get('/:fileId', isAuthenticated, async (req, res) => {
     const { fileId } = req.params;
     if (!fileId) {
@@ -39,51 +37,6 @@ router.get('/:fileId', isAuthenticated, async (req, res) => {
         });
     } catch (error) {
         console.error('Print route error:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Error processing print request'
-        });
-    }
-});
-
-// Unauthenticated print route for QR code access
-router.get('/temp/:token', async (req, res) => {
-    const { token } = req.params;
-    if (!token) {
-        return res.status(400).json({
-            success: false,
-            message: 'Token is required'
-        });
-    }
-
-    try {
-        // Verify temporary token
-        const decoded = verifyTempToken(token);
-        if (!decoded) {
-            return res.status(401).json({
-                success: false,
-                message: 'Invalid or expired token'
-            });
-        }
-
-        const file = await FileModel.findById(decoded.fileId);
-        if (!file) {
-            return res.status(404).json({
-                success: false,
-                message: 'File not found'
-            });
-        }
-
-        res.status(200).json({ 
-            success: true,
-            file: {
-                url: file.path,
-                filename: file.filename,
-                mimetype: file.mimetype
-            }
-        });
-    } catch (error) {
-        console.error('Temp print route error:', error);
         res.status(500).json({
             success: false,
             message: 'Error processing print request'
