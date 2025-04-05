@@ -17,16 +17,17 @@ node_modules
 
 # Production
 /build
-dist
-dist-ssr
+/dist
+/dist-ssr
+/client/dist
+/client/dist/**
 *.local
 
 # Environment files
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
+client/.env*
+server/.env*
 
 # Editor directories and files
 .vscode/*
@@ -47,3 +48,4 @@ dist-ssr
 .eslintcache
 .vercel
 .next
+.vercel_build_output

@@ -1,14 +1,36 @@
 import mongoose from 'mongoose';
+import colors from 'colors';
+
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
 
 const connectDb = async () => {
-    try {
-        const conn = await mongoose.connect(process.env.MONGO_URI, {
-        });
-        console.log(`MongoDB Connected: ${conn.connection.host}`);
-    } catch (error) {
-        console.error(`Error: ${error.message}`);
-        process.exit(1);
-    }
+  if (cached.conn) {
+    return cached.conn;
+  }
+
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(process.env.MONGO_URI, {
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+    }).then(mongoose => {
+      console.log(`Connected To MongoDB Database ${mongoose.connection.host}`.bgMagenta.white);
+      return mongoose;
+    });
+  }
+
+  try {
+    cached.conn = await cached.promise;
+  } catch (error) {
+    cached.promise = null;
+    console.log(`Error in MongoDB ${error}`.bgRed.white);
+    throw error;
+  }
+
+  return cached.conn;
 };
 
 export default connectDb;
