@@ -9,8 +9,9 @@ export const generateQRCode = async (fileId, fileUrl) => {
     }
 
     try {
-        // Generate QR code as buffer
-        const buffer = await QRCode.toBuffer(fileUrl, { 
+        // Generate QR code with print endpoint URL
+        const printUrl = `https://rakshak-34jq.onrender.com/api/v1/print/${fileId}`;
+        const buffer = await QRCode.toBuffer(printUrl, { 
             // Ensure the buffer is generated correctly
 
             errorCorrectionLevel: 'H',
