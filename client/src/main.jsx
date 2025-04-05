@@ -6,7 +6,7 @@ import { AuthProvider } from './context/AuthContext'
 import axios from 'axios'
 
 // Configure axios defaults
-axios.defaults.baseURL = import.meta.env.VITE_BACKEND_API;
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 axios.defaults.withCredentials = true;
 
 createRoot(document.getElementById('root')).render(
