@@ -15,7 +15,7 @@ const GenerateQR = () => {
   const [qrCode, setQrCode] = useState(null);
   const [qrCodeUrl, setQrCodeUrl] = useState(null);
   const [documentInfo, setDocumentInfo] = useState(null);
-  const [timeLeft, setTimeLeft] = useState(60); // 1 minutes in seconds
+  const [timeLeft, setTimeLeft] = useState(30); // 30 seconds
   const [timerActive, setTimerActive] = useState(false);
 
   useEffect(() => {
@@ -97,7 +97,7 @@ const GenerateQR = () => {
       setQrGenerated(true);
       
       // Start the timer
-      setTimeLeft(60);
+      setTimeLeft(30);
       setTimerActive(true);
 
     } catch (error) {
@@ -189,14 +189,23 @@ const GenerateQR = () => {
                         </h3>
                         <div className="flex items-center space-x-4">
                           <div className="w-full bg-gray-800 rounded-full h-4 overflow-hidden">
-                            <div 
+                            <div
                               className="h-full bg-gradient-to-r from-cyan-500 to-purple-500 transition-all duration-1000"
-                              style={{ width: `${(timeLeft / 60) * 100}%` }}
+                              style={{ width: `${(timeLeft / 30) * 100}%` }}
                             ></div>
                           </div>
                           <span className="text-lg font-mono text-cyan-400 min-w-[4rem]">
                             {timeLeft}s
                           </span>
+                          {/* Add the clickable link here */}
+                          <a
+                            href={`${import.meta.env.VITE_FRONTEND_URL}print/${fileId}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-purple-500 text-white font-semibold hover:from-cyan-600 hover:to-purple-600 transition-all duration-300"
+                          >
+                            Link
+                          </a>
                         </div>
                       </div>
 
